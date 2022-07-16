@@ -11,4 +11,10 @@
     <string name="sign_in">Sign In</string>
     <string name="don_t_have_a_account_sign_up">don\'t have a account?Sign Up</string>
     <string name="my_notes">MY NOTES</string>
+    <string name="search_note">Search Note</string>
+    <string name="miscellaneous">Miscellaneous</string>
+    <string name="delete_note">Delete Note</string>
+    <string name="note_title">Note Title</string>
+    <string name="note_subtitle">Note SubTitle</string>
+    <string name="type_note_here">Type Note Here</string>
 </resources>
