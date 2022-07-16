@@ -1,4 +1,4 @@
-package com.khalil.taskapp
+package com.khalil.taskapp.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

@@ -1,4 +1,4 @@
-package com.khalil.taskapp
+package com.khalil.taskapp.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +19,11 @@ class SignINActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
+        binding.btnLogin.setOnClickListener{
+            val intent = Intent(this, NoteActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
 
     }

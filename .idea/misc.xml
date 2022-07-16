@@ -4,10 +4,16 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/drawable-v24/button_design.xml" value="0.1205" />
+        <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/drawable/backgroud_miscellaneous.xml" value="0.143" />
+        <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/drawable/ic_done.xml" value="0.143" />
+        <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/layout/activity_create_note.xml" value="0.22" />
         <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/layout/activity_main.xml" value="0.196875" />
+        <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/layout/activity_note.xml" value="0.196875" />
         <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/layout/activity_sign_inactivity.xml" value="0.196875" />
         <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/layout/activity_signup.xml" value="0.196875" />
         <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/layout/activity_splash_screan.xml" value="0.196875" />
+        <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/layout/item_container_note.xml" value="0.196875" />
+        <entry key="..\:/Users/Windows 7/AndroidStudioProjects/taskapp/app/src/main/res/layout/layout_miscellaneous.xml" value="0.196875" />
       </map>
     </option>
   </component>
