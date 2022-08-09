@@ -12,6 +12,7 @@ import com.khalil.taskapp.databinding.ItemContainerNoteBinding
 import com.khalil.taskapp.model.Note
 import com.khalil.taskapp.model.NoteListener
 import java.util.*
+import kotlin.collections.ArrayList
 
 class NotesAdapter(val context: Context, private val noteListener: NoteListener) : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
@@ -31,7 +32,7 @@ class NotesAdapter(val context: Context, private val noteListener: NoteListener)
             }
             binding.textDateTime.setText(note.dataTime)
 
-            if (note.imagePath.trim().isNotEmpty()) {
+            if (!note.imagePath.isNullOrEmpty()) {
                 binding.imageNote.setImageBitmap(BitmapFactory.decodeFile(note.imagePath))
                 binding.imageNote.visibility = View.VISIBLE
             } else {
@@ -39,39 +40,6 @@ class NotesAdapter(val context: Context, private val noteListener: NoteListener)
             }
         }
 
-    }
-    fun searchNote(searchKeyword: String) {
-        timer = Timer()
-        timer?.schedule(object : TimerTask() {
-            override fun run() {
-                if (searchKeyword.trim { it <= ' ' }.isEmpty()) {
-                    updateList(noteSource)
-                } else {
-                    val temp = ArrayList<Note>()
-                    for (note in noteSource!!) {
-                        if (note.title.toLowerCase()
-                                .contains(searchKeyword.lowercase(Locale.getDefault()))
-                            || note.subtitle.toLowerCase()
-                                .contains(searchKeyword.lowercase(Locale.getDefault()))
-                            || note.noteText.toLowerCase()
-                                .contains(searchKeyword.lowercase(Locale.getDefault()))
-                        ) {
-                            temp.add(note)
-                        }
-                    }
-                    updateList(temp)
-                }
-                Handler(Looper.getMainLooper()).post {
-                    run { notifyDataSetChanged() }
-                }
-            }
-        }, 500)
-    }
-
-    fun cancelTimer() {
-        if (timer != null) {
-            timer!!.cancel()
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
@@ -102,6 +70,10 @@ class NotesAdapter(val context: Context, private val noteListener: NoteListener)
         notes.clear()
         notes.addAll(newList)
         notifyDataSetChanged()
+    }
+
+    fun getList() : ArrayList<Note>{
+        return notes
     }
 
 }

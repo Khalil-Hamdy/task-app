@@ -87,11 +87,11 @@ class CreateNoteActivity : AppCompatActivity() {
             }
             val vaildImagePass = intent.getBooleanExtra("vnoteImagePath",false)
             if(vaildImagePass) {
-                val noteImagePath = intent.getStringExtra("noteSubtitle")
+                val noteImagePath = intent.getStringExtra("noteImagePath")
                 binding.imageNote.setImageBitmap(BitmapFactory.decodeFile(noteImagePath))
                 binding.imageNote.visibility = View.VISIBLE
                 binding.imageRemoveImage.visibility = View.VISIBLE
-                if (noteImagePath != null) {
+                if (!noteImagePath.isNullOrEmpty()) {
                     selectedImagePath = noteImagePath
                 }
             }

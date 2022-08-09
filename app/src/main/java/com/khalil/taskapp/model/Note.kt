@@ -15,6 +15,6 @@ data class Note (
     @ColumnInfo(name = "note_text")
     lateinit var noteText : String
     @ColumnInfo(name = "image_path")
-    lateinit var imagePath : String
+    var imagePath : String? = null
 
 }

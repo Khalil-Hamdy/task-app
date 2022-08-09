@@ -4,9 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 
 import android.view.View
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.khalil.taskapp.databinding.ActivityNoteBinding
 import com.khalil.taskapp.dp.NotesDatabase
@@ -15,18 +19,15 @@ import com.khalil.taskapp.model.NoteListener
 import com.khalil.taskapp.repository.NoteRepository
 import com.khalil.taskapp.viewModel.NoteViewModel
 import com.khalil.taskapp.viewModel.NoteViewModelFactory
+import java.util.*
+import kotlin.collections.ArrayList
 
 class NoteActivity : AppCompatActivity(),NoteListener {
 
     lateinit var binding: ActivityNoteBinding
 
-    val REQUEST_CODE_FOR_RESULT : Int = 1
-    val REQUEST_CODE_UPDATE_NOTE : Int = 2
-    val REQUEST_CODE_show_NOTE : Int = 3
-
-
-    //lateinit var notesRecyclerView: RecyclerView
-    lateinit var noteList: List<Note>
+    lateinit var noteList: ArrayList<Note>
+    lateinit var noteList2: ArrayList<Note>
     val notesAdapter = NotesAdapter(this, this)
 
     private var noteClickedListener = -1
@@ -56,25 +57,6 @@ class NoteActivity : AppCompatActivity(),NoteListener {
             this.finish()
         }
 
-//        binding.inputSearch.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-//
-//            }
-//            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-//                notesAdapter.cancelTimer()
-//            }
-//
-//            override fun afterTextChanged(editable: Editable) {
-//                if (noteList.size != 0) {
-//                    notesAdapter.searchNote(editable.toString())
-//                }
-//            }
-//        })
-
-        binding.noteRecyclerview.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        binding.noteRecyclerview.adapter = notesAdapter
-
         //new code
         val database = NotesDatabase(this)
         val repository = NoteRepository(database)
@@ -83,9 +65,48 @@ class NoteActivity : AppCompatActivity(),NoteListener {
         val viewModel = ViewModelProvider(this, factory).get(NoteViewModel::class.java) // MANDATORY
         viewModel.getAllNote().observe(this, Observer  {
             notesAdapter.updateList(it)
+            noteList2 = it as ArrayList<Note> /* = java.util.ArrayList<com.khalil.taskapp.model.Note> */
         })
 
 
+        noteList = notesAdapter.getList()
+        val swipeToDeleteCallback = object : SwipeToDeleteCallback(){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.absoluteAdapterPosition
+                var deleteNote : Note = noteList[position]
+                noteList.removeAt(position)
+                viewModel.delete(deleteNote)
+                //notesAdapter.updateList(noteList)
+                notesAdapter.notifyItemRemoved(position)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(binding.noteRecyclerview)
+
+
+
+        binding.noteRecyclerview.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.noteRecyclerview.adapter = notesAdapter
+
+
+        binding.inputSearch.setOnQueryTextListener( object : androidx.appcompat.widget.SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                var tempArr = ArrayList<Note>()
+                for(arr in noteList2){
+                    if(arr.title!!.toLowerCase(Locale.getDefault()).contains(p0.toString())){
+                        tempArr.add(arr)
+                    }
+                }
+                notesAdapter.updateList(tempArr)
+                return true
+            }
+
+        })
 
     }
 
@@ -103,7 +124,7 @@ class NoteActivity : AppCompatActivity(),NoteListener {
                 intent.putExtra("noteNoteText", note.noteText)
             }
         intent.putExtra("noteTitle", note.title)
-        if( note.imagePath.trim().isNotEmpty() ) {
+        if(!note.imagePath.isNullOrEmpty()) {
             intent.putExtra("vnoteImagePath", true)
             intent.putExtra("noteImagePath", note.imagePath)
         }
